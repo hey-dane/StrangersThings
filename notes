@@ -1,0 +1,36 @@
+forgetting how to display an error message, such as the password or username does not meet the requirements. 
+
+It seems you're making progress, but there's still a small issue in your code. In the handleSubmit function, you're trying to use result.data.token and post without actually defining them. You need to prepare the post object using the title, description, price, and willDeliver values from your component state.
+
+Here's how you can adjust your handleSubmit function to correctly create and send the post object to the makePost function:
+
+jsx
+Copy code
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const token = sessionStorage.getItem("token");
+
+  try {
+    const post = {
+      title: title,
+      description: description,
+      price: price,
+      willDeliver: willDeliver,
+    };
+
+    const response = await makePost(token, post);
+
+    if (response.success) {
+      // handle successful submission, saving to API and re-rendering onto the page.
+      console.log("Listing submitted successfully!");
+    } else {
+      setError(response.error.message || "Failed to submit listing.");
+    }
+  } catch (error) {
+    setError("An error occurred during submission.");
+  }
+};
+This code defines the post object using the values from your component's state (title, description, price, and willDeliver), and then passes this object to the makePost function along with the token. Make sure that the makePost function also accepts the post object as an argument.
+
+With this adjustment, your code should work as intended to create a new listing when the form is submitted.
