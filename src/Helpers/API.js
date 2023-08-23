@@ -1,9 +1,9 @@
-const COHORT_NAME = "2302-ACC-PT-WEB-PT-C";
-const BASE_URL = "https://strangers-things.herokuapp.com/api";
+const BASE_URL =
+  "https://strangers-things.herokuapp.com/api/2302-ACC-PT-WEB-PT-C";
 
 export const fetchPosts = async (token) => {
   try {
-    const response = await fetch(`${BASE_URL}/${COHORT_NAME}/posts`, {
+    const response = await fetch(`${BASE_URL}/posts`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -19,7 +19,7 @@ export const fetchPosts = async (token) => {
 
 export const makePost = async (token, post) => {
   try {
-    const response = await fetch(`${BASE_URL}/${COHORT_NAME}/posts`, {
+    const response = await fetch(`${BASE_URL}/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export const makePost = async (token, post) => {
 
 export const updatePost = async (token, postId, updatedPost) => {
   try {
-    const response = await fetch(`${BASE_URL}/${COHORT_NAME}/posts/${postId}`, {
+    const response = await fetch(`${BASE_URL}/posts/${postId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +69,7 @@ export const updatePost = async (token, postId, updatedPost) => {
 
 export const deletePost = async (token, postId) => {
   try {
-    const response = await fetch(`${BASE_URL}/${COHORT_NAME}/posts/${postId}`, {
+    const response = await fetch(`${BASE_URL}/posts/${postId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export const postMessage = async (token) => {
 
 export const registerUser = async (username, password) => {
   try {
-    const response = await fetch(`${BASE_URL}/${COHORT_NAME}/users/register`, {
+    const response = await fetch(`${BASE_URL}/users/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -133,20 +133,24 @@ export const registerUser = async (username, password) => {
 
 export const login = async (username, password) => {
   try {
-    const response = await fetch(`${BASE_URL}/${COHORT_NAME}/users/login`, {
+    const response = await fetch(`${BASE_URL}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: username,
-        password: password,
+        user: {
+          username: username,
+          password: password,
+        },
       }),
     });
+
     console.log("Login Response:", response); // Log the entire response
 
     if (response.ok) {
       const data = await response.json(); // Parse the response JSON
+      console.log("Login Data:", data); // Log the parsed data
       return data; // Return the parsed data
     } else {
       throw new Error(`Login failed with status ${response.status}`);
@@ -159,7 +163,7 @@ export const login = async (username, password) => {
 
 export const myData = async (token) => {
   try {
-    const response = await fetch(`${BASE_URL}/${COHORT_NAME}/users/me`, {
+    const response = await fetch(`${BASE_URL}/users/me`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -175,7 +179,7 @@ export const myData = async (token) => {
 
 export const fetchSinglePost = async (postId, token) => {
   try {
-    const response = await fetch(`${BASE_URL}/${COHORT_NAME}/posts/${postId}`, {
+    const response = await fetch(`${BASE_URL}/posts/${postId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

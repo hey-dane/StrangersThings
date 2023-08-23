@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import RegistrationForm from "../components/RegistrationForm";
 import { userLogin } from "../Helpers/userLogin";
 import { login } from "../Helpers/API";
@@ -7,29 +8,21 @@ export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Log the username and password before making the API request
-    console.log("Username:", username);
-    console.log("Password:", password);
-
-    // Perform authentication and get token
     try {
       const response = await login(username, password);
-      console.log("Login Response:", response);
 
-      const result = response;
-
-      if (result.data.token) {
-        // Store token on successful login (implement your logIn function accordingly)
-        userLogin(result.data.token);
+      if (response.success && response.data.token) {
+        userLogin(response.data.token);
+        navigate("/profile");
       } else {
-        setError(result.error.message || "Login failed.");
+        setError("Login failed.");
       }
     } catch (error) {
-      // Log any errors for debugging
       console.error("An error occurred during login:", error);
       setError("An error occurred during login.");
     }

@@ -6,6 +6,7 @@ import SinglePostView from "./components/SinglePostView";
 import LoginForm from "./Pages/Login";
 import { fetchUserData } from "./Helpers/API";
 import { getToken, isLoggedIn } from "./Helpers/userLogin";
+import { Profile } from "./Pages/Profile";
 
 function App() {
   const [userData, setUserData] = useState(null);
@@ -45,6 +46,7 @@ function App() {
         />
         <Route path="/Login" element={<LoginForm />} />
         <Route path="/post/:postId" element={<SinglePostView />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );
