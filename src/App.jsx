@@ -10,6 +10,7 @@ import { Profile } from "./Pages/Profile";
 
 function App() {
   const [userData, setUserData] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(isLoggedIn()); // Initialize the state
 
   // Function to load user data
   const loadUserData = async () => {
@@ -37,14 +38,17 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar isAuthenticated={isAuthenticated} />{" "}
-      {/* Pass isAuthenticated as a prop */}
+      <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
       <Routes>
         <Route
           path="/AllPosts"
           element={<AllPosts isAuthenticated={isAuthenticated} />}
         />
-        <Route path="/Login" element={<LoginForm />} />
+        <Route
+          path="/Login"
+          element={<LoginForm setLoggedIn={setLoggedIn} />}
+        />{" "}
+        {/* Pass setLoggedIn as a prop */}
         <Route path="/post/:postId" element={<SinglePostView />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>

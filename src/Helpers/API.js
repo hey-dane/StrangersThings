@@ -84,23 +84,20 @@ export const deletePost = async (token, postId) => {
   }
 };
 
-export const postMessage = async (token) => {
+export const postMessage = async (token, postId, content) => {
   try {
-    const response = await fetch(
-      `${BASE_URL}/${COHORT_NAME}/posts/5e8929ddd439160017553e06/messages`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+    const response = await fetch(`${BASE_URL}/posts/${postId}/messages`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        message: {
+          content: content,
         },
-        body: JSON.stringify({
-          message: {
-            content: "Do you still have this?  Would you take $10 less?",
-          },
-        }),
-      }
-    );
+      }),
+    });
     const result = await response.json();
     console.log(result);
     return result;
@@ -201,7 +198,7 @@ export async function fetchUserData(token) {
   }
 
   try {
-    const response = await axios.get("/api/users/me", {
+    const response = await fetch(`${BASE_URL}/users/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

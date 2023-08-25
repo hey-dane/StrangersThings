@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { postMessage } from "../Helpers/API";
 
-export default function NewMessage() {
+export default function NewMessage({ postId }) {
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
@@ -15,7 +15,8 @@ export default function NewMessage() {
       const response = await postMessage(token, postId, content);
 
       if (response.success) {
-        // handle successful submission, saving to API and re-rendering onto the page.
+        setSubject("");
+        setContent("");
         console.log("Message submitted successfully!");
       } else {
         setError(response.error.message || "Failed to submit message.");

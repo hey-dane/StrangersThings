@@ -78,7 +78,7 @@ export default function RegistrationForm() {
 
   return (
     <div>
-      <h2>Register for access.</h2>
+      <h2>Register to send a message.</h2>
       {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <label>

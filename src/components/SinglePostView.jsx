@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { fetchSinglePost } from "../Helpers/API";
 import { fetchPosts } from "../Helpers/API";
 import { useParams } from "react-router-dom";
+import NewMessage from "./NewMessage";
 
 export default function SinglePostView() {
   const [post, setPost] = useState([]);
@@ -40,7 +41,6 @@ export default function SinglePostView() {
         <p>{post.willDeliver ? "Will Deliver" : "Local Pickup Only"}</p>
         <p>Price: {post.price}</p>
 
-        {/* Render messages if available */}
         {post.message && post.message.length > 0 && (
           <div>
             <p>Messages:</p>
@@ -53,6 +53,7 @@ export default function SinglePostView() {
           </div>
         )}
       </div>
+      <NewMessage postId={postId} />
     </div>
   );
 }

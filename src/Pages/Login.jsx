@@ -4,7 +4,8 @@ import RegistrationForm from "../components/RegistrationForm";
 import { userLogin } from "../Helpers/userLogin";
 import { login } from "../Helpers/API";
 
-export default function LoginForm() {
+export default function LoginForm({ setLoggedIn }) {
+  // Accept setLoggedIn as a prop
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,6 +19,8 @@ export default function LoginForm() {
 
       if (response.success && response.data.token) {
         userLogin(response.data.token);
+        setLoggedIn(true);
+
         navigate("/profile");
       } else {
         setError("Login failed.");

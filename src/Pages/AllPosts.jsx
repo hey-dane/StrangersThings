@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import NewListingForm from "../components/NewListingForm";
 import { fetchPosts } from "../Helpers/API";
 import { useNavigate } from "react-router-dom";
 
@@ -69,7 +68,7 @@ export default function AllPosts() {
           ))}
         </div>
       )}
-      <NewListingForm />
+      <h3>Login or register to send the seller a message.</h3>
     </div>
   );
 }

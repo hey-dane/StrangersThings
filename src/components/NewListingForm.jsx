@@ -36,7 +36,7 @@ export default function NewListingForm() {
 
   return (
     <div>
-      <h2>Crreate a New Listing</h2>
+      <h2>Create a New Listing</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Title:

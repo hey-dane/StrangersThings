@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { isLoggedIn } from "../Helpers/userLogin";
 import LogoutButton from "./LogoutButton";
 
-function Navbar() {
+function Navbar({ loggedIn, setLoggedIn }) {
+  const handleLogout = (isLoggedOut) => {
+    // Handle the logout state change here
+    setLoggedIn(!isLoggedOut);
+  };
+
   return (
     <nav className="navbar">
       <ul className="navbar-nav">
@@ -17,15 +21,16 @@ function Navbar() {
             Login
           </Link>
         </li>
-        <li className="nav-item">
-          <Link to="/Profile" className="nav-link">
-            Profile
-          </Link>
-        </li>
-        {/* Check if the user is logged in before rendering the LogoutButton */}
-        {isLoggedIn() && (
+        {loggedIn && (
           <li className="nav-item">
-            <LogoutButton />
+            <Link to="/Profile" className="nav-link">
+              Profile
+            </Link>
+          </li>
+        )}
+        {loggedIn && (
+          <li className="nav-item">
+            <LogoutButton onLogout={handleLogout} />
           </li>
         )}
       </ul>

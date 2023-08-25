@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 // Function to retrieve the token
 export const getToken = () => {
   return sessionStorage.getItem("token") || null;
