@@ -98,7 +98,19 @@ export const postMessage = async (token, postId, content) => {
         },
       }),
     });
+
     const result = await response.json();
+    if (result.success) {
+      // Fetch the username of the author
+      const authorResponse = await fetch(
+        `${BASE_URL}/users/${result.data.message.fromUser}`
+      );
+      const authorData = await authorResponse.json();
+      if (authorData.success) {
+        result.data.message.fromUser = authorData.data.user.username;
+      }
+    }
+
     console.log(result);
     return result;
   } catch (err) {
@@ -167,7 +179,7 @@ export const myData = async (token) => {
       },
     });
     const result = await response.json();
-    console.log(result);
+    console.log("API Response:", result); // Add this line to log the response
     return result;
   } catch (err) {
     console.error(err);

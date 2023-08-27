@@ -8,15 +8,12 @@ export default function LogoutButton({ onLogout }) {
   const handleLogout = async () => {
     try {
       await userLogout();
-      // Redirect user to the login page
       navigate("/Login");
-      // Notify the parent component that logout was successful
       onLogout(true);
     } catch (error) {
       console.error("Logout error:", error);
     }
   };
 
-  // Render the logout button only if the user is logged in
   return isLoggedIn() ? <button onClick={handleLogout}>Logout</button> : null;
 }

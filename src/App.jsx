@@ -6,20 +6,19 @@ import SinglePostView from "./components/SinglePostView";
 import LoginForm from "./Pages/Login";
 import { fetchUserData } from "./Helpers/API";
 import { getToken, isLoggedIn } from "./Helpers/userLogin";
-import { Profile } from "./Pages/Profile";
+import Profile from "./Pages/Profile";
+import Home from "./Pages/Home";
+import NewListingForm from "./Pages/NewListingForm";
 
 function App() {
   const [userData, setUserData] = useState(null);
   const [loggedIn, setLoggedIn] = useState(isLoggedIn()); // Initialize the state
 
-  // Function to load user data
   const loadUserData = async () => {
     try {
       const token = getToken();
       if (token) {
-        // If a token exists, fetch user data
         const data = await fetchUserData(token);
-        setUserData(data.user);
       }
     } catch (error) {
       console.error("Error loading user data:", error);
@@ -27,11 +26,9 @@ function App() {
   };
 
   useEffect(() => {
-    // Load user data when the page loads
     loadUserData();
   }, []);
 
-  // Function to check if the user is authenticated
   const isAuthenticated = () => {
     return isLoggedIn();
   };
@@ -40,17 +37,18 @@ function App() {
     <div className="App">
       <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route
-          path="/AllPosts"
+          path="/allposts"
           element={<AllPosts isAuthenticated={isAuthenticated} />}
         />
         <Route
-          path="/Login"
+          path="/login"
           element={<LoginForm setLoggedIn={setLoggedIn} />}
-        />{" "}
-        {/* Pass setLoggedIn as a prop */}
+        />
         <Route path="/post/:postId" element={<SinglePostView />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/createlisting" element={<NewListingForm />} />
       </Routes>
     </div>
   );

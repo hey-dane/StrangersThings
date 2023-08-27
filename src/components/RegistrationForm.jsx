@@ -1,48 +1,26 @@
 import React, { useState } from "react";
 import { registerUser } from "../Helpers/API";
+import { useNavigate } from "react-router-dom";
 
 export default function RegistrationForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [usernameError, setUsernameError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false); // Track registration success
+  const navigate = useNavigate();
 
-  const handleUsernameUpdate = (e) => {
-    const usernamePattern = /^[a-zA-Z0-9_-]{8,20}$/;
-    const newUsername = e.target.value;
-
-    setUsername(newUsername);
-
-    if (!usernamePattern.test(newUsername)) {
-      setUsernameError(
-        "Username must be 8-20 characters and can only contain letters, digits, underscores, or hyphens."
-      );
-    } else {
-      setUsernameError("");
-    }
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
   };
 
-  const handlePasswordUpdate = (e) => {
-    const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    const newPassword = e.target.value;
-
-    setPassword(newPassword);
-
-    if (!passwordPattern.test(newPassword)) {
-      setPasswordError(
-        "Password requirements: 8 characters, at least 1 number, 1 lowercase letter, and 1 uppercase letter."
-      );
-    } else {
-      setPasswordError("");
-    }
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
   };
 
-  const handleConfirmPasswordUpdate = (e) => {
-    const newConfirmPassword = e.target.value;
-
-    setConfirmPassword(newConfirmPassword);
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -59,59 +37,66 @@ export default function RegistrationForm() {
     }
 
     setError("");
-    setUsernameError("");
-    setPasswordError("");
+    setIsLoading(true);
 
     try {
-      const response = await registerUser(username, password);
-      const result = await response.json();
+      const result = await registerUser(username, password);
 
       if (result.success) {
-        // Registration successful, do something with the token
+        // Registration successful, set registrationSuccess to true
+        setRegistrationSuccess(true);
       } else {
         setError(result.error.message || "Registration failed.");
       }
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       setError("An error occurred during registration.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div>
       <h2>Register to send a message.</h2>
-      {error && <p>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={username}
-            onChange={handleUsernameUpdate}
-            required
-          />
-        </label>
-        {usernameError && <p>{usernameError}</p>}
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={handlePasswordUpdate}
-            required
-          />
-        </label>
-        {passwordError && <p>{passwordError}</p>}
-        <label>
-          Confirm Password:
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordUpdate}
-            required
-          />
-        </label>
-        <button type="submit">Register</button>
-      </form>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : registrationSuccess ? (
+        // Display a success message
+        <p>Registration successful. Log in for access.</p>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          <label>
+            Username:
+            <input
+              type="text"
+              value={username}
+              onChange={handleUsernameChange}
+              required
+            />
+          </label>
+          <label>
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              required
+            />
+          </label>
+          <label>
+            Confirm Password:
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              required
+            />
+          </label>
+          <button type="submit">Register</button>
+        </form>
+      )}
     </div>
   );
 }

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 
 function Navbar({ loggedIn, setLoggedIn }) {
   const handleLogout = (isLoggedOut) => {
-    // Handle the logout state change here
     setLoggedIn(!isLoggedOut);
   };
 
@@ -12,26 +11,37 @@ function Navbar({ loggedIn, setLoggedIn }) {
     <nav className="navbar">
       <ul className="navbar-nav">
         <li className="nav-item">
-          <Link to="/AllPosts" className="nav-link">
+          <Link to="/" className="nav-link">
+            Home
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/allposts" className="nav-link">
             All Posts
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/Login" className="nav-link">
-            Login
+          <Link to="/createlisting" className="nav-link">
+            Create Listing
           </Link>
         </li>
-        {loggedIn && (
+        {!loggedIn ? (
           <li className="nav-item">
-            <Link to="/Profile" className="nav-link">
-              Profile
+            <Link to="/login" className="nav-link">
+              Login
             </Link>
           </li>
-        )}
-        {loggedIn && (
-          <li className="nav-item">
-            <LogoutButton onLogout={handleLogout} />
-          </li>
+        ) : (
+          <>
+            <li className="nav-item">
+              <Link to="/profile" className="nav-link">
+                Profile
+              </Link>
+            </li>
+            <li className="nav-item">
+              <LogoutButton onLogout={handleLogout} />
+            </li>
+          </>
         )}
       </ul>
     </nav>

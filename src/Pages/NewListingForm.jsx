@@ -24,7 +24,10 @@ export default function NewListingForm() {
       const response = await makePost(token, post);
 
       if (response.success) {
-        // handle successful submission, saving to API and re-rendering onto the page.
+        setTitle("");
+        setDescription("");
+        setPrice("");
+        setWillDeliver("");
         console.log("Listing submitted successfully!");
       } else {
         setError(response.error.message || "Failed to submit listing.");
