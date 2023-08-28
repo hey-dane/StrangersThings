@@ -6,8 +6,8 @@ import NewMessage from "./NewMessage";
 
 export default function SinglePostView() {
   const [post, setPost] = useState([]);
-  const [showMessageForm, setShowMessageForm] = useState(false);
   const { postId } = useParams();
+  const isUserLoggedIn = !!sessionStorage.getItem("token"); // Check if user is logged in
 
   useEffect(() => {
     async function fetchPostData() {
@@ -32,29 +32,31 @@ export default function SinglePostView() {
   }, [postId]);
 
   return (
-    <div>
-      <div key={post._id}>
-        <h3>{post.title}</h3>
-        <p>{post.description}</p>
-        <p>{post.location}</p>
-        <p>{post.willDeliver ? "Will Deliver" : "Local Pickup Only"}</p>
-        <p>Price: {post.price}</p>
-        <p>{post.location}</p>
-        <p>Seller: {post.author?.username}</p>
+    <div className="card text-center mb-3" style={{ width: "18rem" }}>
+      <div className="card-body">
+        <h5 className="card-title">{post.title}</h5>
+        <p className="card-text">{post.description}</p>
+        <p className="card-text">{post.location}</p>
+        <p className="card-text">
+          {post.willDeliver ? "Will Deliver" : "Local Pickup Only"}
+        </p>
+        <p className="card-text">Price: {post.price}</p>
+        <p className="card-text">Seller: {post.author?.username}</p>
 
         {post.message && post.message.length > 0 && (
           <div>
-            <p>Messages:</p>
+            <p className="card-text">Messages:</p>
             {post.message.map((message) => (
               <div key={message._id}>
-                <p>From: {message.fromUser.username}</p>
-                <p>Content: {message.content}</p>
+                <p className="card-text">From: {message.fromUser.username}</p>
+                <p className="card-text">Content: {message.content}</p>
               </div>
             ))}
           </div>
         )}
+
+        {isUserLoggedIn && <NewMessage postId={postId} />}
       </div>
-      <NewMessage postId={postId} />
     </div>
   );
 }

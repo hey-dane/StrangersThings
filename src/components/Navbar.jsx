@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
+import { isLoggedIn, userLogout } from "../Helpers/userLogin"; // Import the isLoggedIn and userLogout functions
 
-function Navbar({ loggedIn, setLoggedIn }) {
-  const handleLogout = (isLoggedOut) => {
+function Navbar() {
+  const handleLogout = () => {
     // Handle the logout state change here
-    setLoggedIn(!isLoggedOut);
+    userLogout(); // Log the user out
   };
 
   return (
@@ -21,30 +22,28 @@ function Navbar({ loggedIn, setLoggedIn }) {
             All Posts
           </Link>
         </li>
-        {loggedIn && (
-          <li className="nav-item">
-            <Link to="/NewListingForm" className="nav-link">
-              Create Listing
-            </Link>
-          </li>
-        )}
-        {!loggedIn && ( // Check if user is NOT logged in
+
+        {isLoggedIn() ? (
+          <>
+            <li className="nav-item">
+              <Link to="/NewListingForm" className="nav-link">
+                Create Listing
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/Profile" className="nav-link">
+                Profile
+              </Link>
+            </li>
+            <li className="nav-item">
+              <LogoutButton onLogout={handleLogout} />
+            </li>
+          </>
+        ) : (
           <li className="nav-item">
             <Link to="/Login" className="nav-link">
               Login
             </Link>
-          </li>
-        )}
-        {loggedIn && (
-          <li className="nav-item">
-            <Link to="/Profile" className="nav-link">
-              Profile
-            </Link>
-          </li>
-        )}
-        {loggedIn && (
-          <li className="nav-item">
-            <LogoutButton onLogout={handleLogout} />
           </li>
         )}
       </ul>

@@ -203,8 +203,22 @@ export async function fetchUserData(token) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data;
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch user data with status ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    if (data && data.data) {
+      return data.data; // Return the user data
+    } else {
+      throw new Error("User data not available.");
+    }
   } catch (error) {
+    console.error("Error fetching user data:", error);
     throw error;
   }
 }
