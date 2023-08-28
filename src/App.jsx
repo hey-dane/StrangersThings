@@ -6,7 +6,10 @@ import SinglePostView from "./components/SinglePostView";
 import LoginForm from "./Pages/Login";
 import { fetchUserData } from "./Helpers/API";
 import { getToken, isLoggedIn } from "./Helpers/userLogin";
-import { Profile } from "./Pages/Profile";
+import Profile from "./Pages/Profile";
+import Home from "./Pages/Home";
+import "bootstrap/dist/css/bootstrap.min.css";
+import NewListingForm from "./Pages/NewListingForm";
 
 function App() {
   const [userData, setUserData] = useState(null);
@@ -40,15 +43,19 @@ function App() {
     <div className="App">
       <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route
           path="/AllPosts"
           element={<AllPosts isAuthenticated={isAuthenticated} />}
         />
         <Route
+          path="/NewListingForm"
+          element={<NewListingForm isAuthenticated={isAuthenticated} />}
+        />
+        <Route
           path="/Login"
           element={<LoginForm setLoggedIn={setLoggedIn} />}
-        />{" "}
-        {/* Pass setLoggedIn as a prop */}
+        />
         <Route path="/post/:postId" element={<SinglePostView />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>

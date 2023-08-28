@@ -12,15 +12,29 @@ function Navbar({ loggedIn, setLoggedIn }) {
     <nav className="navbar">
       <ul className="navbar-nav">
         <li className="nav-item">
+          <Link to="/" className="nav-link">
+            Home
+          </Link>
+        </li>
+        <li className="nav-item">
           <Link to="/AllPosts" className="nav-link">
             All Posts
           </Link>
         </li>
-        <li className="nav-item">
-          <Link to="/Login" className="nav-link">
-            Login
-          </Link>
-        </li>
+        {loggedIn && (
+          <li className="nav-item">
+            <Link to="/NewListingForm" className="nav-link">
+              Create Listing
+            </Link>
+          </li>
+        )}
+        {!loggedIn && ( // Check if user is NOT logged in
+          <li className="nav-item">
+            <Link to="/Login" className="nav-link">
+              Login
+            </Link>
+          </li>
+        )}
         {loggedIn && (
           <li className="nav-item">
             <Link to="/Profile" className="nav-link">

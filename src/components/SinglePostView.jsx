@@ -33,13 +33,14 @@ export default function SinglePostView() {
 
   return (
     <div>
-      <h2>Post</h2>
       <div key={post._id}>
         <h3>{post.title}</h3>
         <p>{post.description}</p>
         <p>{post.location}</p>
         <p>{post.willDeliver ? "Will Deliver" : "Local Pickup Only"}</p>
         <p>Price: {post.price}</p>
+        <p>{post.location}</p>
+        <p>Seller: {post.author?.username}</p>
 
         {post.message && post.message.length > 0 && (
           <div>

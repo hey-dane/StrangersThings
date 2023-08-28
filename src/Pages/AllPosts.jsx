@@ -42,28 +42,36 @@ export default function AllPosts() {
       {posts.length === 0 ? (
         <p>No posts available.</p>
       ) : (
-        <div>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="row">
           {filteredPosts.map((post) => (
             <div
               key={post._id}
-              className="post"
+              className="col-md-4 mb-3"
               onClick={() => handleClick(post._id)} // Call handleClick on click
             >
-              <h3>{post.title}</h3>
-              <p>{post.description}</p>
-              <p>{post.location}</p>
-              <p>{post.willDeliver ? "Will Deliver" : "Local Pickup Only"}</p>
-              <p>Price: {post.price}</p>
-              <p>Seller: {post.author.username}</p>
-              {post.message && post.message.length > 0 && (
-                <p>Messages Available</p>
-              )}
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">{post.title}</h5>
+                  <p className="card-text">{post.description}</p>
+                  {/* <p>{post.location}</p>
+                  <p>
+                    {post.willDeliver ? "Will Deliver" : "Local Pickup Only"}
+                  </p>
+                  <p>Price: {post.price}</p>
+                  <p>Seller: {post.author.username}</p> */}
+
+                  <a
+                    href="#"
+                    className="btn btn-primary"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent parent div click
+                      handleClick(post._id); // Trigger the click event on the button
+                    }}
+                  >
+                    See Details
+                  </a>
+                </div>
+              </div>
             </div>
           ))}
         </div>
