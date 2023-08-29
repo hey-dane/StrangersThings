@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchSinglePost } from "../Helpers/API";
 import { fetchPosts } from "../Helpers/API";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import NewMessage from "./NewMessage";
 
 export default function SinglePostView() {
@@ -63,7 +63,16 @@ export default function SinglePostView() {
             </div>
           )}
 
-          {isUserLoggedIn && <NewMessage postId={postId} />}
+          {isUserLoggedIn ? (
+            <NewMessage postId={postId} />
+          ) : (
+            <div>
+              <p className="bold-text">Login to send a message.</p>
+              <Link to="/Login" className="btn btn-primary">
+                Login
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

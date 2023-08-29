@@ -14,26 +14,6 @@ import NewListingForm from "./Pages/NewListingForm";
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const loadUserData = async () => {
-    try {
-      const token = getToken();
-      if (token) {
-        const response = await fetchUserData(token);
-
-        if (response && response.data && response.data.user) {
-          setLoggedIn(true);
-        } else {
-          console.error("User data not available.");
-          setLoggedIn(false);
-        }
-      } else {
-        setLoggedIn(false);
-      }
-    } catch (error) {
-      console.error("Error loading user data:", error);
-      setLoggedIn(false);
-    }
-  };
   useEffect(() => {
     const token = getToken();
 
