@@ -57,7 +57,7 @@ export default function RegistrationForm() {
   };
 
   return (
-    <div>
+    <div id="main">
       <h2>Register to send a message.</h2>
       {isLoading ? (
         <p>Loading...</p>

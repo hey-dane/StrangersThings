@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { useParams, useNavigate } from "react-router-dom";
 import { myData, deletePost } from "../Helpers/API";
 import { isLoggedIn } from "../Helpers/userLogin";
 
 export default function Profile() {
   const { postId } = useParams();
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate();
   const [profileData, setProfileData] = useState({
     posts: [],
     messages: [],
@@ -27,7 +27,13 @@ export default function Profile() {
       const token = sessionStorage.getItem("token");
       if (token) {
         const userData = await myData(token);
-        setProfileData(userData.data);
+        // Filter out deleted posts using session storage
+        const deletedPostIds =
+          JSON.parse(sessionStorage.getItem("deletedPostIds")) || [];
+        const filteredPosts = userData.data.posts.filter(
+          (post) => !deletedPostIds.includes(post._id)
+        );
+        setProfileData({ ...userData.data, posts: filteredPosts });
       }
     } catch (error) {
       console.error("Error loading profile data:", error);
@@ -70,33 +76,20 @@ export default function Profile() {
     }
   };
 
-  const filteredPosts = profileData.posts.filter((post) => {
-    const deletedPostIds =
-      JSON.parse(sessionStorage.getItem("deletedPostIds")) || [];
-    return !deletedPostIds.includes(post._id);
-  });
-
-  const messagesByPost = {};
-  profileData.messages.forEach((message) => {
-    if (!messagesByPost[message.post._id]) {
-      messagesByPost[message.post._id] = [];
-    }
-    messagesByPost[message.post._id].push(message);
-  });
-
   return (
     <div id="main" className="Profile">
       <h2>Welcome, {profileData.username}</h2>
       <h3>Your Posts:</h3>
       <ul>
-        {filteredPosts.map((post) => (
+        {profileData.posts.map((post) => (
           <li key={post._id}>
             {post.title}
             <button onClick={() => handleDelete(post._id)}>Delete</button>
             <h4>Messages:</h4>
             <ul>
-              {messagesByPost[post._id] &&
-                messagesByPost[post._id].map((message) => (
+              {profileData.messages
+                .filter((message) => message.post._id === post._id)
+                .map((message) => (
                   <li key={message._id}>
                     <strong>From: {message.fromUser.username}</strong>
                     <p>{message.content}</p>

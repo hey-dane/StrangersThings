@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makePost } from "../Helpers/API";
 
-export default function NewListingForm() {
+export default function CreateListingForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");

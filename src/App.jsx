@@ -8,52 +8,48 @@ import { fetchUserData } from "./Helpers/API";
 import { getToken, isLoggedIn } from "./Helpers/userLogin";
 import Profile from "./Pages/Profile";
 import Home from "./Pages/Home";
+import CreateListingForm from "./Pages/CreateListing";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NewListingForm from "./Pages/NewListingForm";
 
 function App() {
-  const [userData, setUserData] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(isLoggedIn()); // Initialize the state
+  // Initialize loggedIn based on whether a token is present
+  const [loggedIn, setLoggedIn] = useState(isLoggedIn());
+
+  const loadUserData = async () => {
+    try {
+      const token = getToken();
+      if (token) {
+        const data = await fetchUserData(token);
+      }
+    } catch (error) {
+      console.error("Error loading user data:", error);
+    }
+  };
 
   useEffect(() => {
-    const token = getToken();
-
-    const checkToken = async () => {
-      if (token) {
-        try {
-          const response = await fetchUserData(token);
-
-          if (response && response.data && response.data.user) {
-            setLoggedIn(true);
-          } else {
-            console.error("User data not available.");
-            setLoggedIn(false);
-          }
-        } catch (error) {
-          console.error("Error loading user data:", error);
-          setLoggedIn(false);
-        }
-      } else {
-        setLoggedIn(false);
-      }
-    };
-
-    checkToken();
+    loadUserData();
   }, []);
+
+  const isAuthenticated = () => {
+    return isLoggedIn();
+  };
 
   return (
     <div className="App">
       <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
       <Routes>
         <Route path="/" element={<Home isLoggedIn={loggedIn} />} />
-        <Route path="/AllPosts" element={<AllPosts />} />
-        <Route path="/NewListingForm" element={<NewListingForm />} />
         <Route
-          path="/Login"
+          path="/allposts"
+          element={<AllPosts isAuthenticated={isAuthenticated} />}
+        />
+        <Route
+          path="/login"
           element={<LoginForm setLoggedIn={setLoggedIn} />}
         />
         <Route path="/post/:postId" element={<SinglePostView />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/createlisting" element={<CreateListingForm />} />
       </Routes>
     </div>
   );

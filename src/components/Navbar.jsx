@@ -9,6 +9,9 @@ function Navbar({ loggedIn, setLoggedIn }) {
 
   return (
     <nav className="navbar">
+      <div className="logo">
+        <h4>Stranger's Things</h4>
+      </div>
       <ul className="navbar-nav">
         <li className="nav-item">
           <Link to="/" className="nav-link">
@@ -22,7 +25,7 @@ function Navbar({ loggedIn, setLoggedIn }) {
         </li>
         {loggedIn && (
           <li className="nav-item">
-            <Link to="/NewListingForm" className="nav-link">
+            <Link to="/createlisting" className="nav-link">
               Create Listing
             </Link>
           </li>

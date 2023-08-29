@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { postMessage } from "../Helpers/API";
 
 export default function NewMessage({ postId }) {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const token = sessionStorage.getItem("token"); // Assuming token is only set when the user is logged in
+
+  const handleContentChange = (e) => {
+    setContent(e.target.value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const token = sessionStorage.getItem("token");
 
     try {
       if (!content) {
@@ -33,7 +36,7 @@ export default function NewMessage({ postId }) {
 
   return (
     <div id="new-message">
-      <form onSubmit={handleMessageSubmit}>
+      <form onSubmit={handleSubmit}>
         <label>
           Message:
           <textarea
@@ -44,10 +47,9 @@ export default function NewMessage({ postId }) {
           />
         </label>
         <button type="submit">Send Message</button>
-        {messageSent && <p>Message sent!</p>}
+        {successMessage && <p>Message sent!</p>}
         {error && <p>{error}</p>}
       </form>
-      {successMessage && <p className="success-message">{successMessage}</p>}
     </div>
   );
 }

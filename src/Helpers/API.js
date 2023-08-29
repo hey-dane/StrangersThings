@@ -195,11 +195,15 @@ export const fetchSinglePost = async (postId, token) => {
       },
     });
 
+    if (!response.ok) {
+      throw new Error(`Failed to fetch post (status ${response.status})`);
+    }
+
     const result = await response.json();
     console.log(result);
     return result;
   } catch (err) {
-    console.error(err);
+    console.error("Error fetching single post:", err);
     throw err;
   }
 };

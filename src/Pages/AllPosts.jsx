@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function AllPosts() {
   const [posts, setPosts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // Add search term state
   const navigate = useNavigate();
-  const token = sessionStorage.getItem("token"); // Get the user's token
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     async function loadAllPosts() {
@@ -26,7 +26,6 @@ export default function AllPosts() {
 
   const filterPosts = () => {
     return posts.filter((post) => {
-      // Customize this logic to match against the fields you want to search
       return (
         post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         post.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -38,6 +37,12 @@ export default function AllPosts() {
 
   return (
     <div id="main" className="all-posts">
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       {posts.length === 0 ? (
         <p>No posts available.</p>
       ) : (
