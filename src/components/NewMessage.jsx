@@ -3,12 +3,8 @@ import { postMessage } from "../Helpers/API";
 
 export default function NewMessage({ postId }) {
   const [content, setContent] = useState("");
-  const [error, setError] = useState(null);
-  const [messageSent, setMessageSent] = useState(false);
-
-  const handleContentChange = (e) => {
-    setContent(e.target.value);
-  };
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,9 +21,7 @@ export default function NewMessage({ postId }) {
 
       if (response.success) {
         setContent("");
-        setError(null);
-        setMessageSent(true);
-        console.log("Message submitted successfully!");
+        setSuccessMessage("Message submitted successfully!");
       } else {
         setError(response.error.message || "Failed to submit message.");
       }
@@ -39,7 +33,7 @@ export default function NewMessage({ postId }) {
 
   return (
     <div id="new-message">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleMessageSubmit}>
         <label>
           Message:
           <textarea
@@ -53,6 +47,7 @@ export default function NewMessage({ postId }) {
         {messageSent && <p>Message sent!</p>}
         {error && <p>{error}</p>}
       </form>
+      {successMessage && <p className="success-message">{successMessage}</p>}
     </div>
   );
 }

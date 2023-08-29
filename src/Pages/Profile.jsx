@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { fetchSinglePost, myData, deletePost } from "../Helpers/API";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { myData, deletePost } from "../Helpers/API";
+import { isLoggedIn } from "../Helpers/userLogin";
 
-function Profile() {
+export default function Profile() {
   const { postId } = useParams();
+  const navigate = useNavigate(); // Initialize the navigate function
   const [profileData, setProfileData] = useState({
     posts: [],
     messages: [],
@@ -11,7 +13,13 @@ function Profile() {
   });
 
   useEffect(() => {
-    loadProfileData();
+    // Check if the user is logged in before loading profile data
+    if (isLoggedIn()) {
+      loadProfileData();
+    } else {
+      // If not logged in, redirect to the login page
+      navigate("/login");
+    }
   }, []);
 
   const loadProfileData = async () => {
@@ -19,7 +27,7 @@ function Profile() {
       const token = sessionStorage.getItem("token");
       if (token) {
         const userData = await myData(token);
-        setProfileData(userData.data); // Assuming your API response structure matches the expected state shape
+        setProfileData(userData.data);
       }
     } catch (error) {
       console.error("Error loading profile data:", error);
@@ -34,7 +42,6 @@ function Profile() {
       if (response.success) {
         console.log("Post deleted successfully!");
 
-        // Store the deleted post ID in sessionStorage
         const deletedPostIds =
           JSON.parse(sessionStorage.getItem("deletedPostIds")) || [];
         sessionStorage.setItem(
@@ -42,7 +49,6 @@ function Profile() {
           JSON.stringify([...deletedPostIds, postId])
         );
 
-        // Update the profileData state to remove the deleted post and its associated messages
         setProfileData((prevData) => {
           const updatedPosts = prevData.posts.filter(
             (post) => post._id !== postId
@@ -64,14 +70,12 @@ function Profile() {
     }
   };
 
-  // Filter out deleted posts
   const filteredPosts = profileData.posts.filter((post) => {
     const deletedPostIds =
       JSON.parse(sessionStorage.getItem("deletedPostIds")) || [];
     return !deletedPostIds.includes(post._id);
   });
 
-  // Organize messages by post
   const messagesByPost = {};
   profileData.messages.forEach((message) => {
     if (!messagesByPost[message.post._id]) {
@@ -79,8 +83,9 @@ function Profile() {
     }
     messagesByPost[message.post._id].push(message);
   });
+
   return (
-    <div>
+    <div id="main" className="Profile">
       <h2>Welcome, {profileData.username}</h2>
       <h3>Your Posts:</h3>
       <ul>
@@ -104,4 +109,3 @@ function Profile() {
     </div>
   );
 }
-export default Profile;

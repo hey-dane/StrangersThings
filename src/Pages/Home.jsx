@@ -1,11 +1,6 @@
-import React from "react";
-
-// Assuming isLoggedIn is a boolean variable that indicates if the user is logged in
-const isLoggedIn = true; // You can replace this with your actual check
-
-export default function Home() {
+export default function Home({ isLoggedIn }) {
   return (
-    <div id="home-content">
+    <div id="main" className="home">
       <h1>Stranger's Things</h1>
       <h2>Your one-stop shop for things that don't belong to you...yet.</h2>
       {isLoggedIn ? (

@@ -4,27 +4,26 @@ import { useNavigate } from "react-router-dom";
 
 export default function AllPosts() {
   const [posts, setPosts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // State for the search term
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("token"); // Get the user's token
 
   useEffect(() => {
     async function loadAllPosts() {
       try {
-        const token = sessionStorage.getItem("token");
-        const postsData = await fetchPosts(token); // Fetch posts based on authentication
+        const postsData = await fetchPosts(token);
         setPosts(postsData.data.posts);
       } catch (error) {
         console.error("Error loading posts.", error);
       }
     }
     loadAllPosts();
-  }, []);
+  }, [token]);
 
   const handleClick = (postId) => {
     navigate(`/post/${postId}`);
   };
 
-  // Function to filter posts based on search term
   const filterPosts = () => {
     return posts.filter((post) => {
       // Customize this logic to match against the fields you want to search
@@ -38,37 +37,42 @@ export default function AllPosts() {
   const filteredPosts = filterPosts();
 
   return (
-    <div id="all-posts-container">
+    <div id="main" className="all-posts">
       {posts.length === 0 ? (
         <p>No posts available.</p>
       ) : (
-        <div>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="row">
           {filteredPosts.map((post) => (
             <div
               key={post._id}
-              className="post"
-              onClick={() => handleClick(post._id)} // Call handleClick on click
+              className="col-md-4 mb-3"
+              onClick={() => handleClick(post._id)}
             >
-              <h3>{post.title}</h3>
-              <p>{post.description}</p>
-              <p>{post.location}</p>
-              <p>{post.willDeliver ? "Will Deliver" : "Local Pickup Only"}</p>
-              <p>Price: {post.price}</p>
-              <p>Seller: {post.author.username}</p>
-              {post.message && post.message.length > 0 && (
-                <p>Messages Available</p>
-              )}
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">{post.title}</h5>
+                  <p className="card-text">{post.description}</p>
+                  <a
+                    href="#"
+                    className="btn btn-primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleClick(post._id);
+                    }}
+                  >
+                    See Details
+                  </a>
+                </div>
+              </div>
             </div>
           ))}
         </div>
       )}
-      <h3>Login or register to send the seller a message.</h3>
+      {token ? (
+        <h3>Logged in: You can now send the seller a message.</h3>
+      ) : (
+        <h3>Login or register to send the seller a message.</h3>
+      )}
     </div>
   );
 }

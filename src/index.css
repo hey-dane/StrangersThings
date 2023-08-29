@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Poppins:wght@300&display=swap");
+
+.App {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  font-family: "Poppins", sans-serif;
+}
+
+h1 {
+  font-family: "Gloria Hallelujah", cursive;
+}
+
+#main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.navbar-nav {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.nav-item {
+  margin-right: 10px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #262626;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: #a73523;
+}
+
+form {
+  display: flex;
+  width: 250px;
+  flex-direction: column;
+}
+
+label {
+  padding: 10px;
+}

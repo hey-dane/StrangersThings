@@ -20,18 +20,21 @@ function Navbar({ loggedIn, setLoggedIn }) {
             All Posts
           </Link>
         </li>
-        <li className="nav-item">
-          <Link to="/createlisting" className="nav-link">
-            Create Listing
-          </Link>
-        </li>
-        {!loggedIn ? (
+        {loggedIn && (
+          <li className="nav-item">
+            <Link to="/NewListingForm" className="nav-link">
+              Create Listing
+            </Link>
+          </li>
+        )}
+        {!loggedIn && (
           <li className="nav-item">
             <Link to="/login" className="nav-link">
               Login
             </Link>
           </li>
-        ) : (
+        )}
+        {loggedIn ? (
           <>
             <li className="nav-item">
               <Link to="/profile" className="nav-link">
@@ -42,7 +45,7 @@ function Navbar({ loggedIn, setLoggedIn }) {
               <LogoutButton onLogout={handleLogout} />
             </li>
           </>
-        )}
+        ) : null}
       </ul>
     </nav>
   );
