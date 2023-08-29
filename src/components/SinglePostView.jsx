@@ -32,30 +32,39 @@ export default function SinglePostView() {
   }, [postId]);
 
   return (
-    <div className="card text-center mb-3" style={{ width: "18rem" }}>
-      <div className="card-body">
-        <h5 className="card-title">{post.title}</h5>
-        <p className="card-text">{post.description}</p>
-        <p className="card-text">{post.location}</p>
-        <p className="card-text">
-          {post.willDeliver ? "Will Deliver" : "Local Pickup Only"}
-        </p>
-        <p className="card-text">Price: {post.price}</p>
-        <p className="card-text">Seller: {post.author?.username}</p>
+    <div
+      className="d-flex justify-content-center"
+      style={{ minHeight: "100vh" }}
+    >
+      <div
+        className="card text-center mb-3"
+        id="main"
+        style={{ width: "18rem" }}
+      >
+        <div className="card-body">
+          <h5 className="card-title">{post.title}</h5>
+          <p className="card-text">{post.description}</p>
+          <p className="card-text">{post.location}</p>
+          <p className="card-text">
+            {post.willDeliver ? "Will Deliver" : "Local Pickup Only"}
+          </p>
+          <p className="card-text">Price: {post.price}</p>
+          <p className="card-text">Seller: {post.author?.username}</p>
 
-        {post.message && post.message.length > 0 && (
-          <div>
-            <p className="card-text">Messages:</p>
-            {post.message.map((message) => (
-              <div key={message._id}>
-                <p className="card-text">From: {message.fromUser.username}</p>
-                <p className="card-text">Content: {message.content}</p>
-              </div>
-            ))}
-          </div>
-        )}
+          {post.message && post.message.length > 0 && (
+            <div>
+              <p className="card-text">Messages:</p>
+              {post.message.map((message) => (
+                <div key={message._id}>
+                  <p className="card-text">From: {message.fromUser.username}</p>
+                  <p className="card-text">Content: {message.content}</p>
+                </div>
+              ))}
+            </div>
+          )}
 
-        {isUserLoggedIn && <NewMessage postId={postId} />}
+          {isUserLoggedIn && <NewMessage postId={postId} />}
+        </div>
       </div>
     </div>
   );

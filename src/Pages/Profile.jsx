@@ -85,7 +85,7 @@ export default function Profile() {
   });
 
   return (
-    <div>
+    <div id="main" className="Profile">
       <h2>Welcome, {profileData.username}</h2>
       <h3>Your Posts:</h3>
       <ul>

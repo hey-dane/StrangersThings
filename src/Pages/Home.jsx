@@ -1,7 +1,7 @@
 export default function Home({ isLoggedIn }) {
   console.log("isLoggedIn:", isLoggedIn); // Add this line for debugging
   return (
-    <div id="home-content">
+    <div id="main" className="home">
       <h1>Stranger's Things</h1>
       <h2>Your one-stop shop for things that don't belong to you...yet.</h2>
       {isLoggedIn ? (

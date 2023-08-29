@@ -7,7 +7,7 @@ export default function NewListingForm() {
   const [price, setPrice] = useState("");
   const [willDeliver, setWillDeliver] = useState(false);
   const [error, setError] = useState("");
-
+  const [successMessage, setSuccessMessage] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -24,8 +24,11 @@ export default function NewListingForm() {
       const response = await makePost(token, post);
 
       if (response.success) {
-        // handle successful submission, saving to API and re-rendering onto the page.
-        console.log("Listing submitted successfully!");
+        setSuccessMessage("Listing submitted successfully!");
+        setTitle("");
+        setDescription("");
+        setPrice("");
+        setWillDeliver(false);
       } else {
         setError(response.error.message || "Failed to submit listing.");
       }
@@ -35,7 +38,7 @@ export default function NewListingForm() {
   };
 
   return (
-    <div>
+    <div id="main" className="create-listing">
       <h2>Create a New Listing</h2>
       <form onSubmit={handleSubmit}>
         <label>
@@ -71,6 +74,7 @@ export default function NewListingForm() {
         </label>
         <button type="submit">Submit Listing</button>
       </form>
+      {successMessage && <p className="success-message">{successMessage}</p>}
     </div>
   );
 }
