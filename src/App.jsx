@@ -12,7 +12,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import NewListingForm from "./Pages/NewListingForm";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(isLoggedIn()); // Initialize the state
 
   useEffect(() => {
     const token = getToken();

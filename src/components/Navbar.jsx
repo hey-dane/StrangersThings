@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 
@@ -16,7 +16,7 @@ function Navbar({ loggedIn, setLoggedIn }) {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/AllPosts" className="nav-link">
+          <Link to="/allposts" className="nav-link">
             All Posts
           </Link>
         </li>
@@ -29,23 +29,23 @@ function Navbar({ loggedIn, setLoggedIn }) {
         )}
         {!loggedIn && (
           <li className="nav-item">
-            <Link to="/Login" className="nav-link">
+            <Link to="/login" className="nav-link">
               Login
             </Link>
           </li>
         )}
-        {loggedIn && (
-          <li className="nav-item">
-            <Link to="/Profile" className="nav-link">
-              Profile
-            </Link>
-          </li>
-        )}
-        {loggedIn && (
-          <li className="nav-item">
-            <LogoutButton onLogout={handleLogout} />
-          </li>
-        )}
+        {loggedIn ? (
+          <>
+            <li className="nav-item">
+              <Link to="/profile" className="nav-link">
+                Profile
+              </Link>
+            </li>
+            <li className="nav-item">
+              <LogoutButton onLogout={handleLogout} />
+            </li>
+          </>
+        ) : null}
       </ul>
     </nav>
   );
